@@ -1,4 +1,4 @@
-# puppeteer-extra-plugin-adblocker [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/berstend/puppeteer-extra/Test/master)](https://github.com/berstend/puppeteer-extra/actions) [![Discord](https://img.shields.io/discord/737009125862408274)](http://scraping-chat.cf) [![npm](https://img.shields.io/npm/v/puppeteer-extra-plugin-adblocker.svg)](https://www.npmjs.com/package/puppeteer-extra-plugin-adblocker)
+# puppeteer-extra-plugin-adblocker [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/berstend/puppeteer-extra/test.yml?branch=master&event=push) [![Discord](https://img.shields.io/discord/737009125862408274)](https://extra.community) [![npm](https://img.shields.io/npm/v/puppeteer-extra-plugin-adblocker.svg)](https://www.npmjs.com/package/puppeteer-extra-plugin-adblocker)
 
 > A [puppeteer-extra](https://github.com/berstend/puppeteer-extra) plugin to block ads and trackers.
 
@@ -38,11 +38,17 @@ const puppeteer = require('puppeteer-extra')
 
 // Add adblocker plugin, which will transparently block ads in all pages you
 // create using puppeteer.
+const { DEFAULT_INTERCEPT_RESOLUTION_PRIORITY } = require('puppeteer')
 const AdblockerPlugin = require('puppeteer-extra-plugin-adblocker')
-puppeteer.use(AdblockerPlugin())
+puppeteer.use(
+  AdblockerPlugin({
+    // Optionally enable Cooperative Mode for several request interceptors
+    interceptResolutionPriority: DEFAULT_INTERCEPT_RESOLUTION_PRIORITY
+  })
+)
 
 // puppeteer usage as normal
-puppeteer.launch({ headless: true }).then(async (browser) => {
+puppeteer.launch({ headless: true }).then(async browser => {
   const page = await browser.newPage()
   // Visit a page, ads are blocked automatically!
   await page.goto('https://www.google.com/search?q=rent%20a%20car')
@@ -66,7 +72,7 @@ puppeteer.use(Adblocker({ blockTrackers: true }))
 
 puppeteer
   .launch({ headless: false, defaultViewport: null })
-  .then(async (browser) => {
+  .then(async browser => {
     const page = await browser.newPage()
     await page.goto('https://www.vanityfair.com')
     await page.waitForTimeout(60 * 1000)
@@ -83,7 +89,7 @@ Usage:
 ```js
 const AdblockerPlugin = require('puppeteer-extra-plugin-adblocker')
 const adblocker = AdblockerPlugin({
-  blockTrackers: true, // default: false
+  blockTrackers: true // default: false
 })
 puppeteer.use(adblocker)
 ```
@@ -94,6 +100,9 @@ Available options:
 interface PluginOptions {
   /** Whether or not to block trackers (in addition to ads). Default: false */
   blockTrackers: boolean
+  /** Whether or not to block trackers and other annoyances, including cookie
+      notices. Default: false */
+  blockTrackersAndAnnoyances: boolean
   /** Persist adblocker engine cache to disk for speedup. Default: true */
   useCache: boolean
   /** Optional custom directory for adblocker cache files. Default: undefined */

@@ -1,6 +1,6 @@
-# puppeteer-extra-plugin-stealth [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/berstend/puppeteer-extra/Test/master)](https://github.com/berstend/puppeteer-extra/actions) [![Discord](https://img.shields.io/discord/737009125862408274)](http://scraping-chat.cf) [![npm](https://img.shields.io/npm/v/puppeteer-extra-plugin-stealth.svg)](https://www.npmjs.com/package/puppeteer-extra-plugin-stealth)
+# puppeteer-extra-plugin-stealth [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/berstend/puppeteer-extra/test.yml?branch=master&event=push) [![Discord](https://img.shields.io/discord/737009125862408274)](https://extra.community) [![npm](https://img.shields.io/npm/v/puppeteer-extra-plugin-stealth.svg)](https://www.npmjs.com/package/puppeteer-extra-plugin-stealth)
 
-> A plugin for [puppeteer-extra](https://github.com/berstend/puppeteer-extra) to prevent detection.
+> A plugin for [puppeteer-extra](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra) and [playwright-extra](https://github.com/berstend/puppeteer-extra/tree/master/packages/playwright-extra) to prevent detection.
 
 <p align="center"><img src="https://i.imgur.com/q2xBjqH.png" /></p>
 
@@ -73,7 +73,7 @@ puppeteer
 
 ## Status
 
-- ✅ **`puppeeteer-extra` with stealth passes all public bot tests.**
+- ✅ **`puppeteer-extra` with stealth passes all public bot tests.**
 
 Please note: I consider this a friendly competition in a rather interesting cat and mouse game. If the other team (👋) wants to detect headless chromium there are still ways to do that (at least I noticed a few, which I'll tackle in future updates).
 
@@ -176,14 +176,29 @@ _**Tip:** Have a look at the [recaptcha plugin](https://github.com/berstend/pupp
 
 #### Table of Contents
 
-- [class: StealthPlugin](#class-stealthplugin)
-  - [Purpose](#purpose)
-  - [Modularity](#modularity)
-  - [Contributing](#contributing)
-  - [Kudos](#kudos)
-  - [.availableEvasions](#availableevasions)
-  - [.enabledEvasions](#enabledevasions)
-- [defaultExport(opts?)](#defaultexportopts)
+- [puppeteer-extra-plugin-stealth \[ ](#puppeteer-extra-plugin-stealth---)
+  - [Install](#install)
+  - [Usage](#usage)
+  - [Status](#status)
+  - [Changelog](#changelog)
+    - [`v2.4.7`](#v247)
+    - [`v2.4.2` / `v2.4.1`](#v242--v241)
+    - [`v2.4.0`](#v240)
+  - [Test results (red is bad)](#test-results-red-is-bad)
+    - [Vanilla puppeteer without stealth 😢](#vanilla-puppeteer-without-stealth-)
+    - [Puppeteer with stealth plugin 💯](#puppeteer-with-stealth-plugin-)
+    - [Improved reCAPTCHA v3 scores](#improved-recaptcha-v3-scores)
+  - [API](#api)
+    - [Table of Contents](#table-of-contents)
+    - [class: StealthPlugin](#class-stealthplugin)
+      - [Purpose](#purpose)
+      - [Modularity](#modularity)
+      - [Contributing](#contributing)
+      - [Kudos](#kudos)
+      - [.availableEvasions](#availableevasions)
+      - [.enabledEvasions](#enabledevasions)
+    - [defaultExport(opts?)](#defaultexportopts)
+  - [License](#license)
 
 ### class: [StealthPlugin](https://github.com/berstend/puppeteer-extra/blob/e6133619b051febed630ada35241664eba59b9fa/packages/puppeteer-extra-plugin-stealth/index.js#L72-L162)
 
@@ -311,4 +326,4 @@ Default export, PuppeteerExtraStealthPlugin
 
 ## License
 
-Copyright © 2018 - 2021, [berstend̡̲̫̹̠̖͚͓̔̄̓̐̄͛̀͘](mailto:github@berstend.com?subject=[GitHub]%20PuppeteerExtra). Released under the MIT License.
+Copyright © 2018 - 2023, [berstend̡̲̫̹̠̖͚͓̔̄̓̐̄͛̀͘](mailto:github@berstend.com?subject=[GitHub]%20PuppeteerExtra). Released under the MIT License.

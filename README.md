@@ -1,10 +1,10 @@
-# puppeteer-extra
+# puppeteer-extra [![Downloads](https://img.shields.io/endpoint?style=social&url=https://runkit.io/fezvrasta/combined-npm-downloads/1.0.0?packages=puppeteer-extra,puppeteer-extra-plugin,puppeteer-extra-plugin-stealth,puppeteer-extra-plugin-recaptcha,puppeteer-extra-plugin-adblocker)](https://github.com/berstend/puppeteer-extra/)
 
-This is the monorepo for [`puppeteer-extra`](./packages/puppeteer-extra), a modular plugin framework for [`puppeteer`](https://github.com/GoogleChrome/puppeteer). :-)
+This is the monorepo for [`puppeteer-extra`](./packages/puppeteer-extra), a modular plugin framework for [`puppeteer`](https://github.com/puppeteer/puppeteer). :-)
 
 🌟 **For the main documentation, please head over to the [`puppeteer-extra`](./packages/puppeteer-extra) package.**
 
-In case you're interested in the available plugins, check out the [packages folder](./packages/).
+We've also recently introduced support for Playwright, if you're interested in that head over to [`playwright-extra`](./packages/playwright-extra).
 
 ## Monorepo
 
@@ -73,6 +73,13 @@ yarn lernaupdate
 yarn lerna exec "rm -f yarn.lock; rm -rf node_modules; echo 0"
 rm -f yarn.lock &&  rm -rf node_modules && yarn cache clean
 
+# Run tests of specific package
+cd packages/puppeteer-extra-plugin-stealth
+yarn test
+
+# Run tests of specific stealth evasion
+cd packages/puppeteer-extra-plugin-stealth
+yarn ava -v ./evasions/user-agent-override/index.test.js
 
 # Test a local monorepo package in an outside folder as it would've been installed from the registry
 # Change PACKAGE_DIR to the path of this monorepo and PACKAGE to the package you wish to install

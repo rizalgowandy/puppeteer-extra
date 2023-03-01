@@ -1,11 +1,11 @@
 import * as types from './types'
 
 export const ContentScriptDefaultOpts: types.ContentScriptOpts = {
-  visualFeedback: true,
+  visualFeedback: true
 }
 
 export const ContentScriptDefaultData: types.ContentScriptData = {
-  solutions: [],
+  solutions: []
 }
 
 /**
@@ -16,18 +16,28 @@ export class HcaptchaContentScript {
   private opts: types.ContentScriptOpts
   private data: types.ContentScriptData
 
-  private baseUrl = 'assets.hcaptcha.com/captcha/v1/'
+  private baseUrls = [
+    'assets.hcaptcha.com/captcha/v1/',
+    'newassets.hcaptcha.com/captcha/v1/',
+  ]
 
   constructor(
     opts = ContentScriptDefaultOpts,
     data = ContentScriptDefaultData
   ) {
+    // Workaround for https://github.com/esbuild-kit/tsx/issues/113
+    if (typeof globalThis.__name === 'undefined') {
+      globalThis.__defProp = Object.defineProperty
+      globalThis.__name = (target, value) =>
+        globalThis.__defProp(target, 'name', { value, configurable: true })
+    }
+
     this.opts = opts
     this.data = data
   }
 
   private async _waitUntilDocumentReady() {
-    return new Promise(function (resolve) {
+    return new Promise(function(resolve) {
       if (!document || !window) return resolve(null)
       const loadedAlready = /^loaded|^i|^c/.test(document.readyState)
       if (loadedAlready) return resolve(null)
@@ -57,7 +67,7 @@ export class HcaptchaContentScript {
   /** Regular checkboxes */
   private _findRegularCheckboxes() {
     const nodeList = document.querySelectorAll<HTMLIFrameElement>(
-      `iframe[src*='${this.baseUrl}'][data-hcaptcha-widget-id]:not([src*='invisible'])`
+      this.baseUrls.map(url => `iframe[src*='${url}'][data-hcaptcha-widget-id]:not([src*='invisible'])`).join(',')
     )
     return Array.from(nodeList)
   }
@@ -65,15 +75,15 @@ export class HcaptchaContentScript {
   /** Find active challenges from invisible hcaptchas */
   private _findActiveChallenges() {
     const nodeList = document.querySelectorAll<HTMLIFrameElement>(
-      `div[style*='visible'] iframe[src*='${this.baseUrl}'][src*='hcaptcha-challenge.html'][src*='invisible']`
+      this.baseUrls.map(url => `div[style*='visible'] iframe[src*='${url}'][src*='hcaptcha.html']`).join(',')
     )
     return Array.from(nodeList)
   }
 
   private _extractInfoFromIframes(iframes: HTMLIFrameElement[]) {
     return iframes
-      .map((el) => el.src.replace('.html#', '.html?'))
-      .map((url) => {
+      .map(el => el.src.replace('.html#', '.html?'))
+      .map(url => {
         const { searchParams } = new URL(url)
         const result: types.CaptchaInfo = {
           _vendor: 'hcaptcha',
@@ -81,8 +91,8 @@ export class HcaptchaContentScript {
           id: searchParams.get('id'),
           sitekey: searchParams.get('sitekey'),
           display: {
-            size: searchParams.get('size') || 'normal',
-          },
+            size: searchParams.get('size') || 'normal'
+          }
         }
         return result
       })
@@ -91,19 +101,19 @@ export class HcaptchaContentScript {
   public async findRecaptchas() {
     const result = {
       captchas: [] as types.CaptchaInfo[],
-      error: null as null | Error,
+      error: null as null | Error
     }
     try {
       await this._waitUntilDocumentReady()
       const iframes = [
         ...this._findRegularCheckboxes(),
-        ...this._findActiveChallenges(),
+        ...this._findActiveChallenges()
       ]
       if (!iframes.length) {
         return result
       }
       result.captchas = this._extractInfoFromIframes(iframes)
-      iframes.forEach((el) => {
+      iframes.forEach(el => {
         this._paintCaptchaBusy(el)
       })
     } catch (error) {
@@ -116,7 +126,7 @@ export class HcaptchaContentScript {
   public async enterRecaptchaSolutions() {
     const result = {
       solved: [] as types.CaptchaSolved[],
-      error: null as any,
+      error: null as any
     }
     try {
       await this._waitUntilDocumentReady()
@@ -127,9 +137,9 @@ export class HcaptchaContentScript {
         return result
       }
       result.solved = solutions
-        .filter((solution) => solution._vendor === 'hcaptcha')
-        .filter((solution) => solution.hasSolution === true)
-        .map((solution) => {
+        .filter(solution => solution._vendor === 'hcaptcha')
+        .filter(solution => solution.hasSolution === true)
+        .map(solution => {
           window.postMessage(
             JSON.stringify({
               id: solution.id,
@@ -138,8 +148,8 @@ export class HcaptchaContentScript {
               contents: {
                 event: 'challenge-passed',
                 expiration: 120,
-                response: solution.text,
-              },
+                response: solution.text
+              }
             }),
             '*'
           )
@@ -147,7 +157,7 @@ export class HcaptchaContentScript {
             _vendor: solution._vendor,
             id: solution.id,
             isSolved: true,
-            solvedAt: new Date(),
+            solvedAt: new Date()
           }
         })
     } catch (error) {

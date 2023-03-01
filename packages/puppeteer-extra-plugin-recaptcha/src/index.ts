@@ -72,6 +72,11 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
       scriptSource = HcaptchaContentScript.toString()
       scriptName = 'HcaptchaContentScript'
     }
+    // Some bundlers transform classes to anonymous classes that are assigned to
+    // vars (e.g. esbuild). In such cases, `unexpected token '{'` errors are thrown
+    // once the script is executed. Let's bring class name back to script in such
+    // cases!
+    scriptSource = scriptSource.replace(/class \{/, `class ${scriptName} {`)
     return `(async() => {
       const DATA = ${JSON.stringify(data || null)}
       const OPTS = ${JSON.stringify(this.contentScriptOpts)}
@@ -143,7 +148,7 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
       this.debug('waitForRecaptchaClient - end', new Date()) // used as timer
     }
     const hasHcaptchaScriptTag = await page.$(
-      `script[src*="//hcaptcha.com/1/api.js"]`
+      `script[src*="hcaptcha.com/1/api.js"]`
     )
     this.debug('hasHcaptchaScriptTag', !!hasHcaptchaScriptTag)
     if (hasHcaptchaScriptTag) {

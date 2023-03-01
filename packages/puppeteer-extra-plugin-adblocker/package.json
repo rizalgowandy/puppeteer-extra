@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin-adblocker",
-  "version": "2.12.0",
+  "version": "2.13.6",
   "description": "A puppeteer-extra plugin to block ads and trackers.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -47,7 +47,7 @@
     "@types/puppeteer": "*",
     "ava": "^2.4.0",
     "npm-run-all": "^4.1.5",
-    "puppeteer": "^8.0.0",
+    "puppeteer": "^10.2.0",
     "rimraf": "^3.0.0",
     "rollup": "^1.27.5",
     "rollup-plugin-commonjs": "^10.1.0",
@@ -58,16 +58,29 @@
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
     "tslint-config-standard": "^9.0.0",
-    "typescript": "4.1.2"
+    "typescript": "4.7.4"
   },
   "dependencies": {
-    "@cliqz/adblocker-puppeteer": "1.22.6",
+    "@cliqz/adblocker-puppeteer": "1.23.8",
     "debug": "^4.1.1",
     "node-fetch": "^2.6.0",
-    "puppeteer-extra-plugin": "^3.2.0"
+    "puppeteer-extra-plugin": "^3.2.3"
   },
   "peerDependencies": {
+    "puppeteer": "*",
+    "puppeteer-core": "*",
     "puppeteer-extra": "*"
+  },
+  "peerDependenciesMeta": {
+    "puppeteer": {
+      "optional": true
+    },
+    "puppeteer-core": {
+      "optional": true
+    },
+    "puppeteer-extra": {
+      "optional": true
+    }
   },
   "gitHead": "72fe830c158f1e971c8499fdd5232338dd53c220"
 }
